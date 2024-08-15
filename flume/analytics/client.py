@@ -3,9 +3,15 @@ from typing import Optional, Union, Dict
 from datetime import datetime
 
 class SegmentClient:
-    def __init__(self, base_url: str):
+    def __init__(self, base_url: str, api_key: str):
         self.base_url = base_url
+        self.api_key = api_key
 
+    def _get_headers(self):
+        return {
+            "Content-Type": "application/json",
+            "x-api-key": self.api_key  # Add the API key to the headers
+        }
 
     def identify(self, 
                  user_id: Union[str, int], 
@@ -23,10 +29,9 @@ class SegmentClient:
             "anonynmous_id": anonymous_id,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload)
+        response = requests.post(url, json=payload, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
-
 
     def track(self, 
               user_id: str, 
@@ -46,11 +51,10 @@ class SegmentClient:
             "anonymous_id": anonymous_id,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload)
+        response = requests.post(url, json=payload, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
     
-
     def page(self, 
              user_id: str,
              category: Optional[str] = None,
@@ -71,11 +75,10 @@ class SegmentClient:
             "anonymous_id": anonymous_id,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload)
+        response = requests.post(url, json=payload, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
     
-
     def screen(self, 
                user_id: Union[str, int, float], 
                category: Optional[str] = None,
@@ -96,11 +99,10 @@ class SegmentClient:
             "anonymous_id": anonymous_id,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload)
+        response = requests.post(url, json=payload, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
     
-
     def group(self, 
               user_id: Union[str, int, float], 
               group_id: Union[str, int, float], 
@@ -119,11 +121,10 @@ class SegmentClient:
             "anonymous_id": anonymous_id,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload)
+        response = requests.post(url, json=payload, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
     
-
     def alias(self, 
               previous_id: str, 
               user_id: str, 
@@ -138,13 +139,12 @@ class SegmentClient:
             "timestamp": timestamp,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload)
+        response = requests.post(url, json=payload, headers=self._get_headers())
         response.raise_for_status()
         return response.json()
     
-
     def flush(self):
         url = f"{self.base_url}/flush/"
-        response = requests.post(url)
+        response = requests.post(url, headers=self._get_headers())
         response.raise_for_status()
         return response.json()

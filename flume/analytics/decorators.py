@@ -3,13 +3,13 @@ from .client import SegmentClient
 
 segment_client = None
 
-def init_segment_client(base_url: str):
+def init_segment_client(base_url: str, api_key: str):
     """
     Initialize the SegmentClient with the provided base_url.
     This should be called once in your application setup.
     """
     global segment_client
-    segment_client = SegmentClient(base_url)
+    segment_client = SegmentClient(base_url, api_key)
 
 def track(user_id_field='user_id', event_name='Event Name'):
     """
