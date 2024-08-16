@@ -3,9 +3,8 @@ from typing import Optional, Union, Dict, Any
 from datetime import datetime
 
 class SegmentClient:
-    def __init__(self, base_url: str, api_key: str):
+    def __init__(self, base_url: str):
         self.base_url = base_url
-        self.api_key = api_key
 
     def _serialize_payload(self, payload: Dict[str, Any]) -> Dict[str, Any]:
         """Convert datetime objects to ISO format strings in the payload."""
