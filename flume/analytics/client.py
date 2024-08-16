@@ -23,21 +23,14 @@ class SegmentClient:
         url = f"{self.base_url}/identify/"
         payload = {
             "user_id": user_id,
-            "traits": traits if traits is not None else {},
-            "context": context if context is not None else {},
-            "integrations": integrations if integrations is not None else {},
+            "traits": traits,
+            "context": context,
+            "timestamp": timestamp,
+            "anonymous_id": anonymous_id,
+            "integrations": integrations
         }
-        
-        if timestamp is not None:
-            payload["timestamp"] = timestamp.isoformat()  # Ensure timestamp is in string format
-        
-        if anonymous_id is not None:
-            payload["anonymous_id"] = anonymous_id
-        
-        print(f"Payload sent to /identify/: {payload}")
-        
         response = requests.post(url, json=payload)
-        response.raise_for_status()  # This will raise an error if the response was an HTTP error
+        response.raise_for_status()
         return response.json()
 
     def track_event(self, 
