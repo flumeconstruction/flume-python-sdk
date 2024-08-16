@@ -29,6 +29,7 @@ class SegmentClient:
             "anonymous_id": anonymous_id,
             "integrations": integrations
         }
+        print(f"Payload sent to /identify/: {payload}")
         response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
