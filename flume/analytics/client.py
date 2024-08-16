@@ -7,12 +7,6 @@ class SegmentClient:
         self.base_url = base_url
         self.api_key = api_key
 
-    def _get_headers(self):
-        return {
-            "Content-Type": "application/json",
-            "x-api-key": self.api_key  # Add the API key to the headers
-        }
-
     def identify(self, 
                  user_id: Union[str, int], 
                  traits: Optional[Dict] = None, 
@@ -28,11 +22,11 @@ class SegmentClient:
             "integrations": integrations if integrations is not None else {},
         }
         if timestamp is not None:
-            payload["timestamp"] = timestamp.isoformat()  # Ensure timestamp is in string format
+            payload["timestamp"] = timestamp.isoformat() 
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
-                
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        print(f"Payload sent: {payload}")        
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
 
@@ -56,8 +50,8 @@ class SegmentClient:
             payload["timestamp"] = timestamp.isoformat()
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
-                
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        print(f"Payload sent: {payload}")        
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
 
@@ -83,8 +77,8 @@ class SegmentClient:
             payload["timestamp"] = timestamp.isoformat()
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
-                
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        print(f"Payload sent: {payload}")        
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
 
@@ -110,8 +104,8 @@ class SegmentClient:
             payload["timestamp"] = timestamp.isoformat()
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
-                
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        print(f"Payload sent: {payload}")        
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
 
@@ -135,8 +129,8 @@ class SegmentClient:
             payload["timestamp"] = timestamp.isoformat()
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
-                
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        print(f"Payload sent: {payload}")        
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
 
@@ -155,14 +149,15 @@ class SegmentClient:
         }
         if timestamp is not None:
             payload["timestamp"] = timestamp.isoformat()
-                
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        print(f"Payload sent: {payload}")
+
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
 
     def flush(self):
         url = f"{self.base_url}/flush/"
         
-        response = requests.post(url, headers=self._get_headers())
+        response = requests.post(url)
         response.raise_for_status()
         return response.json()
