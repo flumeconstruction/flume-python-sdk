@@ -29,7 +29,7 @@ class SegmentClient:
             "anonynmous_id": anonymous_id,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
 
@@ -51,7 +51,7 @@ class SegmentClient:
             "anonymous_id": anonymous_id,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
     
@@ -75,7 +75,7 @@ class SegmentClient:
             "anonymous_id": anonymous_id,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
     
@@ -99,7 +99,7 @@ class SegmentClient:
             "anonymous_id": anonymous_id,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
     
@@ -121,7 +121,7 @@ class SegmentClient:
             "anonymous_id": anonymous_id,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
     
@@ -139,7 +139,7 @@ class SegmentClient:
             "timestamp": timestamp,
             "integrations": integrations
         }
-        response = requests.post(url, json=payload, headers=self._get_headers())
+        response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
     
