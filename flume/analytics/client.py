@@ -35,7 +35,6 @@ class SegmentClient:
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
         payload = self._serialize_payload(payload)
-        print(f"Payload sent: {payload}")        
         response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
@@ -61,7 +60,6 @@ class SegmentClient:
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
         payload = self._serialize_payload(payload)
-        print(f"Payload sent: {payload}")        
         response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
@@ -89,7 +87,6 @@ class SegmentClient:
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
         payload = self._serialize_payload(payload)
-        print(f"Payload sent: {payload}")        
         response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
@@ -117,7 +114,6 @@ class SegmentClient:
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
         payload = self._serialize_payload(payload)
-        print(f"Payload sent: {payload}")        
         response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
@@ -143,7 +139,6 @@ class SegmentClient:
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
         payload = self._serialize_payload(payload)
-        print(f"Payload sent: {payload}")        
         response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
