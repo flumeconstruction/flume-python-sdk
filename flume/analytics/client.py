@@ -33,7 +33,7 @@ class SegmentClient:
         response.raise_for_status()
         return response.json()
 
-    def track(self, 
+    def track_event(self, 
               user_id: str, 
               event: str, 
               properties: Optional[Dict] = None, 
@@ -41,7 +41,7 @@ class SegmentClient:
               timestamp: Optional[datetime] = None,
               anonymous_id: Optional[Union[str,int]] = None, 
               integrations: Optional[Dict] = None):
-        url = f"{self.base_url}/track/"
+        url = f"{self.base_url}/track_event/"
         payload = {
             "user_id": user_id,
             "event": event,

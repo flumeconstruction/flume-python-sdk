@@ -11,7 +11,7 @@ def init_segment_client(base_url: str, api_key: str):
     global segment_client
     segment_client = SegmentClient(base_url, api_key)
 
-def track(user_id_field='user_id', event_name='Event Name'):
+def track_event(user_id_field='user_id', event_name='Event Name'):
     """
     Decorator for tracking events.
     Automatically tracks an event with the given name after the decorated function is called.
@@ -23,7 +23,7 @@ def track(user_id_field='user_id', event_name='Event Name'):
             if segment_client:
                 user_id = kwargs.get(user_id_field)
                 if user_id:
-                    segment_client.track(user_id=user_id, event=event_name, properties=kwargs)
+                    segment_client.track_event(user_id=user_id, event=event_name, properties=kwargs)
             return result
         return wrapper
     return decorator
