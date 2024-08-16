@@ -23,13 +23,21 @@ class SegmentClient:
         url = f"{self.base_url}/identify/"
         payload = {
             "user_id": user_id,
-            "traits": traits,
-            "context": context,
-            "timestamp": timestamp,
-            "anonymous_id": anonymous_id,
-            "integrations": integrations
         }
+        
+        if traits is not None:
+            payload["traits"] = traits
+        if context is not None:
+            payload["context"] = context
+        if timestamp is not None:
+            payload["timestamp"] = timestamp
+        if anonymous_id is not None:
+            payload["anonymous_id"] = anonymous_id
+        if integrations is not None:
+            payload["integrations"] = integrations
+        
         print(f"Payload sent to /identify/: {payload}")
+        
         response = requests.post(url, json=payload)
         response.raise_for_status()
         return response.json()
