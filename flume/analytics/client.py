@@ -1,11 +1,20 @@
 import requests
-from typing import Optional, Union, Dict
+from typing import Optional, Union, Dict, Any
 from datetime import datetime
 
 class SegmentClient:
     def __init__(self, base_url: str, api_key: str):
         self.base_url = base_url
         self.api_key = api_key
+
+    def _serialize_payload(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """Convert datetime objects to ISO format strings in the payload."""
+        for key, value in payload.items():
+            if isinstance(value, datetime):
+                payload[key] = value.isoformat()
+            elif isinstance(value, dict):
+                payload[key] = self._serialize_payload(value)
+        return payload
 
     def identify(self, 
                  user_id: Union[str, int], 
@@ -22,9 +31,10 @@ class SegmentClient:
             "integrations": integrations if integrations is not None else {},
         }
         if timestamp is not None:
-            payload["timestamp"] = timestamp.isoformat() 
+            payload["timestamp"] = timestamp.isoformat()
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
+        payload = self._serialize_payload(payload)
         print(f"Payload sent: {payload}")        
         response = requests.post(url, json=payload)
         response.raise_for_status()
@@ -50,6 +60,7 @@ class SegmentClient:
             payload["timestamp"] = timestamp.isoformat()
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
+        payload = self._serialize_payload(payload)
         print(f"Payload sent: {payload}")        
         response = requests.post(url, json=payload)
         response.raise_for_status()
@@ -77,6 +88,7 @@ class SegmentClient:
             payload["timestamp"] = timestamp.isoformat()
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
+        payload = self._serialize_payload(payload)
         print(f"Payload sent: {payload}")        
         response = requests.post(url, json=payload)
         response.raise_for_status()
@@ -104,6 +116,7 @@ class SegmentClient:
             payload["timestamp"] = timestamp.isoformat()
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
+        payload = self._serialize_payload(payload)
         print(f"Payload sent: {payload}")        
         response = requests.post(url, json=payload)
         response.raise_for_status()
@@ -129,6 +142,7 @@ class SegmentClient:
             payload["timestamp"] = timestamp.isoformat()
         if anonymous_id is not None:
             payload["anonymous_id"] = anonymous_id
+        payload = self._serialize_payload(payload)
         print(f"Payload sent: {payload}")        
         response = requests.post(url, json=payload)
         response.raise_for_status()
@@ -149,6 +163,7 @@ class SegmentClient:
         }
         if timestamp is not None:
             payload["timestamp"] = timestamp.isoformat()
+        payload = self._serialize_payload(payload)
         print(f"Payload sent: {payload}")
 
         response = requests.post(url, json=payload)
@@ -157,6 +172,7 @@ class SegmentClient:
 
     def flush(self):
         url = f"{self.base_url}/flush/"
+        print(f"Sending request to /flush/")
         
         response = requests.post(url)
         response.raise_for_status()
