@@ -26,7 +26,7 @@ class SegmentClient:
             "traits": traits,
             "context": context,
             "timestamp": timestamp,
-            "anonynmous_id": anonymous_id,
+            "anonymous_id": anonymous_id,
             "integrations": integrations
         }
         response = requests.post(url, json=payload)
