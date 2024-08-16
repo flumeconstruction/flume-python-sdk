@@ -145,6 +145,6 @@ class SegmentClient:
     
     def flush(self):
         url = f"{self.base_url}/flush/"
-        response = requests.post(url, headers=self._get_headers())
+        response = requests.post(url)
         response.raise_for_status()
         return response.json()
