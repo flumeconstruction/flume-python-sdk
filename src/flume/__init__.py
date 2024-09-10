@@ -1,4 +1,4 @@
-from src.flume.analytics.segment_client import SegmentClient
+from flume.analytics.segment_client import SegmentClient
 
 
 class FlumeAnalytics(SegmentClient):
