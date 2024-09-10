@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 class SegmentClient:
-    def __init__(self, base_url: str, environment: Optional[str] = "test"):
+    def __init__(self, base_url: str, environment: str):
         self.base_url = base_url
         self.environment = environment
 
