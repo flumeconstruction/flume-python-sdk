@@ -1,4 +1,4 @@
-import requests
+import httpx
 from typing import Optional, List
 from pydantic import BaseModel
 
@@ -64,17 +64,42 @@ class QuoteService:
         self.url = f"{base_url}/quote"
 
     def retrieve(self, quote_id) -> Quote:
-        response = requests.get(f"{self.url}/get/{quote_id}")
-        if response.status_code == 200:
-            return Quote(**response.json())
-        else:
-            response.raise_for_status()
-            raise Exception("Error getting quote")
+        with httpx.Client(timeout=30) as client:
+            response = client.get(f"{self.url}/get/{quote_id}")
+            if response.status_code == 200:
+                return Quote(**response.json())
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting quote")
 
     def retrieve_quotes_by_item_id(self, item_id) -> List[Quote]:
-        response = requests.get(f"{self.url}/get_all_by_item_id/{item_id}")
-        if response.status_code == 200:
-            return [Quote(**quote) for quote in response.json()]
-        else:
-            response.raise_for_status()
-            raise Exception("Error getting quotes by item id")
+        with httpx.Client(timeout=30) as client:
+            response = client.get(f"{self.url}/get_all_by_item_id/{item_id}")
+            if response.status_code == 200:
+                return [Quote(**quote) for quote in response.json()]
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting quotes by item id")
+
+
+class AsyncQuoteService:
+    def __init__(self, base_url):
+        self.url = f"{base_url}/quote"
+
+    async def retrieve(self, quote_id) -> Quote:
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.get(f"{self.url}/get/{quote_id}")
+            if response.status_code == 200:
+                return Quote(**response.json())
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting quote")
+
+    async def retrieve_quotes_by_item_id(self, item_id) -> List[Quote]:
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.get(f"{self.url}/get_all_by_item_id/{item_id}")
+            if response.status_code == 200:
+                return [Quote(**quote) for quote in response.json()]
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting quotes by item id")

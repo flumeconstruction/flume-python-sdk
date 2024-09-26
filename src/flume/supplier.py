@@ -1,4 +1,4 @@
-import requests
+import httpx
 from typing import Optional, List
 from pydantic import BaseModel
 
@@ -58,9 +58,24 @@ class SupplierService:
         self.url = f"{base_url}/suppliers"
 
     def retrieve(self, supplier_id) -> Supplier:
-        response = requests.get(f"{self.url}/get/{supplier_id}")
-        if response.status_code == 200:
-            return Supplier(**response.json())
-        else:
-            response.raise_for_status()
-            raise Exception("Error getting supplier")
+        with httpx.Client(timeout=30) as client:
+            response = client.get(f"{self.url}/get/{supplier_id}")
+            if response.status_code == 200:
+                return Supplier(**response.json())
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting supplier")
+
+
+class AsyncSupplierService:
+    def __init__(self, base_url):
+        self.url = f"{base_url}/suppliers"
+
+    async def retrieve(self, supplier_id) -> Supplier:
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.get(f"{self.url}/get/{supplier_id}")
+            if response.status_code == 200:
+                return Supplier(**response.json())
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting supplier")

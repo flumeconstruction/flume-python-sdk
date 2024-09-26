@@ -8,8 +8,8 @@ setup(
     packages=find_packages(where="src"),
     python_requires=">=3.11",
     install_requires=[
-        'requests',
-        'pydantic'
+        'pydantic',
+        'httpx'
     ],
     entry_points={
         'console_scripts': [

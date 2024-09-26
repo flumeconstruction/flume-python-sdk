@@ -1,4 +1,4 @@
-import requests
+import httpx
 from pydantic import BaseModel
 
 
@@ -34,9 +34,24 @@ class CustomerService:
         self.url = f"{base_url}/customer"
 
     def retrieve(self, customer_id) -> Customer:
-        response = requests.get(f"{self.url}/get/{customer_id}")
-        if response.status_code == 200:
-            return Customer(**response.json())
-        else:
-            response.raise_for_status()
-            raise Exception("Error getting customer")
+        with httpx.Client(timeout=30) as client:
+            response = client.get(f"{self.url}/get/{customer_id}")
+            if response.status_code == 200:
+                return Customer(**response.json())
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting customer")
+
+
+class AsyncCustomerService:
+    def __init__(self, base_url):
+        self.url = f"{base_url}/customer"
+
+    async def retrieve(self, customer_id) -> Customer:
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.get(f"{self.url}/get/{customer_id}")
+            if response.status_code == 200:
+                return Customer(**response.json())
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting customer")

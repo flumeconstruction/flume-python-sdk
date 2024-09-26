@@ -1,4 +1,4 @@
-import requests
+import httpx
 from typing import Optional, List
 from pydantic import BaseModel, ConfigDict
 
@@ -27,17 +27,42 @@ class ItemService:
         self.url = f"{base_url}/item"
 
     def retrieve(self, item_id) -> Item:
-        response = requests.get(f"{self.url}/get/{item_id}")
-        if response.status_code == 200:
-            return Item(**response.json())
-        else:
-            response.raise_for_status()
-            raise Exception("Error getting item")
+        with httpx.Client(timeout=30) as client:
+            response = client.get(f"{self.url}/get/{item_id}")
+            if response.status_code == 200:
+                return Item(**response.json())
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting item")
 
     def retrieve_items_by_customer_id(self, customer_id) -> List[Item]:
-        response = requests.get(f"{self.url}/get_all/{customer_id}")
-        if response.status_code == 200:
-            return [Item(**item) for item in response.json()]
-        else:
-            response.raise_for_status()
-            raise Exception("Error getting items by customer id")
+        with httpx.Client(timeout=30) as client:
+            response = client.get(f"{self.url}/get_all/{customer_id}")
+            if response.status_code == 200:
+                return [Item(**item) for item in response.json()]
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting items by customer id")
+
+
+class AsyncItemService:
+    def __init__(self, base_url):
+        self.url = f"{base_url}/item"
+
+    async def retrieve(self, item_id) -> Item:
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.get(f"{self.url}/get/{item_id}")
+            if response.status_code == 200:
+                return Item(**response.json())
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting item")
+
+    async def retrieve_items_by_customer_id(self, customer_id) -> List[Item]:
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.get(f"{self.url}/get_all/{customer_id}")
+            if response.status_code == 200:
+                return [Item(**item) for item in response.json()]
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting items by customer id")
