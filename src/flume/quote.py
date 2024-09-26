@@ -5,7 +5,7 @@ class QuoteService:
     def __init__(self, base_url):
         self.url = f"{base_url}/quote"
 
-    def get_quote(self, quote_id):
+    def get(self, quote_id):
         response = requests.get(f"{self.url}/get/{quote_id}")
         if response.status_code == 200:
             return response.json()

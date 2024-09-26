@@ -10,8 +10,7 @@ class FlumeAnalytics(SegmentClient):
 
 
 class Flume:
-    def __init__(self, base_url):
-        self.base_url = base_url
+    def __init__(self, environment: str = "test"):
         self.supplier = SupplierService(
             "https://supplier-service-85865196271.us-central1.run.app")
         self.quote = QuoteService(
