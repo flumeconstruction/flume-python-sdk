@@ -9,6 +9,7 @@ setup(
     python_requires=">=3.11",
     install_requires=[
         'requests',
+        'pydantic'
     ],
     entry_points={
         'console_scripts': [

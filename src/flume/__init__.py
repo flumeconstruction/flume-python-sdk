@@ -2,6 +2,7 @@ from flume.analytics.segment_client import SegmentClient
 from flume.supplier import SupplierService
 from flume.quote import QuoteService
 from flume.item import ItemService
+from flume.customer import CustomerService
 
 
 class FlumeAnalytics(SegmentClient):
@@ -17,3 +18,5 @@ class Flume:
             "https://item-quote-service-85865196271.us-central1.run.app")
         self.item = ItemService(
             "https://item-quote-service-85865196271.us-central1.run.app")
+        self.customer = CustomerService(
+            "https://customer-service-85865196271.us-central1.run.app")
