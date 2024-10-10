@@ -1,4 +1,5 @@
 from flume.analytics.segment_client import SegmentClient
+from flume.product import AsyncProductService, ProductService
 from flume.supplier import SupplierService, AsyncSupplierService
 from flume.quote import QuoteService, AsyncQuoteService
 from flume.item import ItemService, AsyncItemService
@@ -20,6 +21,8 @@ class Flume:
             "https://item-quote-service-85865196271.us-central1.run.app")
         self.customer = CustomerService(
             "https://customer-service-85865196271.us-central1.run.app")
+        self.product = ProductService(
+            "https://master-product-service-85865196271.us-central1.run.app")
 
 
 class AsyncFlume:
@@ -32,3 +35,5 @@ class AsyncFlume:
             "https://item-quote-service-85865196271.us-central1.run.app")
         self.customer = AsyncCustomerService(
             "https://customer-service-85865196271.us-central1.run.app")
+        self.product = AsyncProductService(
+            "https://master-product-service-85865196271.us-central1.run.app")
