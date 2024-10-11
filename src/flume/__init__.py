@@ -22,7 +22,7 @@ class Flume:
         self.customer = CustomerService(
             "https://customer-service-85865196271.us-central1.run.app")
         self.product = ProductService(
-            "https://master-product-service-85865196271.us-central1.run.app")
+            "https://product-service-hv5ml7mvya-uc.a.run.app")
 
 
 class AsyncFlume:
@@ -36,4 +36,4 @@ class AsyncFlume:
         self.customer = AsyncCustomerService(
             "https://customer-service-85865196271.us-central1.run.app")
         self.product = AsyncProductService(
-            "https://master-product-service-85865196271.us-central1.run.app")
+            "https://product-service-hv5ml7mvya-uc.a.run.app")
