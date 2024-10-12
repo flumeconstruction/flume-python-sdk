@@ -9,7 +9,8 @@ setup(
     python_requires=">=3.11",
     install_requires=[
         'pydantic',
-        'httpx'
+        'httpx',
+        'firebase-admin'
     ],
     entry_points={
         'console_scripts': [
