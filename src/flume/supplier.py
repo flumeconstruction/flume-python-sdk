@@ -66,6 +66,15 @@ class SupplierService:
                 response.raise_for_status()
                 raise Exception("Error getting supplier")
 
+    def retrieve_matchable_suppliers(self) -> List[Supplier]:
+        with httpx.Client(timeout=60) as client:
+            response = client.get(f"{self.url}/get_matchable_suppliers")
+            if response.status_code == 200:
+                return [Supplier(**supplier) for supplier in response.json()]
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting matchable suppliers")
+
 
 class AsyncSupplierService:
     def __init__(self, base_url):
@@ -79,3 +88,12 @@ class AsyncSupplierService:
             else:
                 response.raise_for_status()
                 raise Exception("Error getting supplier")
+
+    async def retrieve_matchable_suppliers(self) -> List[Supplier]:
+        async with httpx.AsyncClient(timeout=60) as client:
+            response = await client.get(f"{self.url}/get_matchable_suppliers")
+            if response.status_code == 200:
+                return [Supplier(**supplier) for supplier in response.json()]
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting matchable suppliers")
