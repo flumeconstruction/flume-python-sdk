@@ -123,8 +123,9 @@ class AsyncProductService:
                 response.raise_for_status()
                 raise Exception("Error getting Product")
 
-    async def retrieve_many_products(self, payload: GetManyProductsPayload) -> List[Product]:
+    async def retrieve_many_products(self, product_ids: List[str]) -> List[Product]:
         async with httpx.AsyncClient(timeout=30) as client:
+            payload = GetManyProductsPayload(product_ids=product_ids)
             response = await client.post(f"{self.url}/get_many_products", json=payload.model_dump())
             if response.status_code == 200:
                 return [Product(**product) for product in response.json()]
