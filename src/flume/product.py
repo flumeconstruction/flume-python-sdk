@@ -132,6 +132,16 @@ class AsyncProductService:
             else:
                 response.raise_for_status()
                 raise Exception("Error getting Products")
+    
+    async def retrieve_many_collections(self,collections_ids: List[str]) -> List[ProductCollection]:
+        async with httpx.AsyncClient(timeout=30) as client:
+            payload = GetManyProductsPayload(product_ids=collections_ids)
+            response = await client.post(f"{self.url}/get_many_collections", json=payload.model_dump())
+            if response.status_code == 200:
+                return [ProductCollection(**collection) for collection in response.json()]
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting Collections")
 
     async def retrieve_product_collection(self, collection_id) -> ProductCollection:
         async with httpx.AsyncClient(timeout=30) as client:
