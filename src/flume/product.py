@@ -9,14 +9,17 @@ class SizeVariation(BaseModel):
     height: float | None
     width: float | None
 
+
 class Image(BaseModel):
     id: str
     url: str
     is_external: Optional[bool] = False
 
+
 class Document(BaseModel):
     id: str
     url: str
+
 
 class ProductCategories(str, Enum):
     tile = "tile"
@@ -25,11 +28,13 @@ class ProductCategories(str, Enum):
     ceramic = "ceramic"
     stones = "stones"
 
+
 class PricingUnit(str, Enum):
     sqft = 'sqft'
     piece = 'piece'
     kg = 'kg'
     m2 = 'm2'
+
 
 class Currency(str, Enum):
     USD = "USD"
@@ -39,11 +44,13 @@ class Currency(str, Enum):
     CAD = "CAD"
     AUD = "AUD"
 
+
 class PriceRange(BaseModel):
     min_price: Optional[float] = None
     max_price: Optional[float] = None
     pricing_unit: PricingUnit
     currency: Currency
+
 
 class Product(BaseModel):
     collection_id: str
@@ -61,6 +68,7 @@ class Product(BaseModel):
     is_reviewed: Optional[bool] = True
     created_at: datetime
     updated_at: datetime
+
 
 class ProductCollection(BaseModel):
     collection_id: str
@@ -80,8 +88,12 @@ class ProductCollection(BaseModel):
     created_at: datetime
     updated_at: datetime
 
+
 class ProductCollectionWithProducts(ProductCollection):
     products: List[Product]
+
+class GetManyProductsPayload(BaseModel):
+    product_ids: List[str]
 
 
 class ProductService:
@@ -110,7 +122,16 @@ class AsyncProductService:
             else:
                 response.raise_for_status()
                 raise Exception("Error getting Product")
-    
+
+    async def retrieve_many_products(self, payload: GetManyProductsPayload) -> List[Product]:
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.post(f"{self.url}/get_many_products", json=payload.model_dump())
+            if response.status_code == 200:
+                return [Product(**product) for product in response.json()]
+            else:
+                response.raise_for_status()
+                raise Exception("Error getting Products")
+
     async def retrieve_product_collection(self, collection_id) -> ProductCollection:
         async with httpx.AsyncClient(timeout=30) as client:
             response = await client.get(f"{self.url}/get/{collection_id}")
