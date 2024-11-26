@@ -28,6 +28,10 @@ class CreateItemPayload(BaseModel):
     project_id: str
     item_data: SearchItemData
 
+class UpdateItemPayload(BaseModel):
+    item_id: str
+    item_data: SearchItemData
+
 
 class ItemService:
     def __init__(self, base_url):
@@ -73,6 +77,15 @@ class AsyncItemService:
             else:
                 response.raise_for_status()
                 raise Exception("Error creating item")
+    
+    async def update(self,item:UpdateItemPayload):
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.post(f"{self.url}/update", json=item.model_dump())
+            if response.status_code == 200:
+                return Item(**response.json())
+            else:
+                response.raise_for_status()
+                raise Exception("Error updating item")
 
     async def retrieve_items_by_customer_id(self, customer_id) -> List[Item]:
         async with httpx.AsyncClient(timeout=30) as client:
