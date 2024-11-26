@@ -10,6 +10,7 @@ class SearchItemData(BaseModel):
     quantity: int
     delivery_date: str
     other: Optional[str] = None
+    item_image_url: Optional[str] = None
 
 
 class Item(BaseModel):
@@ -20,6 +21,12 @@ class Item(BaseModel):
     item_phase: str
     created_at: str
     updated_at: str
+
+
+class CreateItemPayload(BaseModel):
+    customer_id: str
+    project_id: str
+    item_data: SearchItemData
 
 
 class ItemService:
@@ -57,6 +64,15 @@ class AsyncItemService:
             else:
                 response.raise_for_status()
                 raise Exception("Error getting item")
+
+    async def create(self, item: CreateItemPayload) -> Item:
+        async with httpx.AsyncClient(timeout=30) as client:
+            response = await client.post(f"{self.url}/create", json=item.model_dump())
+            if response.status_code == 200:
+                return Item(**response.json())
+            else:
+                response.raise_for_status()
+                raise Exception("Error creating item")
 
     async def retrieve_items_by_customer_id(self, customer_id) -> List[Item]:
         async with httpx.AsyncClient(timeout=30) as client:
