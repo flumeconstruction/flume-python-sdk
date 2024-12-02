@@ -77,7 +77,7 @@ class ProductCollection(BaseModel):
     collection_category: ProductCategories
     main_image: Image
     images: List[Image]
-    specifications: Dict[str, str]
+    specifications: Dict[str, Any]
     supplier_id: str
     variations: Dict[str, List[str | SizeVariation]]
     files: List[Document]
